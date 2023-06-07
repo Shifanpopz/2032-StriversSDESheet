@@ -1,0 +1,38 @@
+#include <bits/stdc++.h> 
+vector<int> dijkstra(vector<vector<int>> &vec, int vertices, int edges, int source) {
+
+        vector<pair<int,int>>adj[vertices];
+        
+        for(int i=0;i<vec.size();i++){
+            adj[vec[i][0]].push_back({vec[i][1],vec[i][2]});
+            adj[vec[i][1]].push_back({vec[i][0],vec[i][2]});
+        }
+        
+
+        
+        set<pair<int,int>>st;
+        vector<int>dist(vertices,INT_MAX);
+        dist[source]=0;
+        st.insert({0, source});
+
+        while(!st.empty()){
+            auto i=*(st.begin());
+            int node=i.second;
+            int dis=i.first;
+            st.erase(i);
+
+            for(auto it:adj[node]){
+                int v=it.first;
+                int d=it.second;
+                if(dis+d<dist[v]){
+                    if(dist[v]!=1e9){
+                        st.erase({dist[v],v});
+                    }
+                    dist[v]=dis+d;
+                    st.insert({dist[v], v});
+                }
+            }
+        }
+        return dist;
+        
+}
